@@ -15,16 +15,18 @@ from sklearn.linear_model import SGDClassifier
 from sklearn.tree import DecisionTreeClassifier
 
 
+
 train_df = pd.read_csv('train_clean.csv')
 test_df = pd.read_csv('test_clean.csv')
 combine = [train_df, test_df]
 
 X_train = train_df.drop('Survived', axis=1)
-Y_train = train_df['Survived']
+y_train = train_df['Survived']
 
 X_test = test_df.drop('PassengerId', axis=1).copy()
 
 
+'''
 # Logistic Regression
 logreg = LogisticRegression(max_iter=1000)
 logreg.fit(X_train, Y_train)
@@ -47,16 +49,17 @@ knn = KNeighborsClassifier(n_neighbors=3)
 knn.fit(X_train, Y_train)
 Y_pred = knn.predict(X_test)
 acc_knn = knn.score(X_train, Y_train)
+'''
 
 # Random Forest
 random_forest = RandomForestClassifier(n_estimators=100)
-random_forest.fit(X_train, Y_train)
+random_forest.fit(X_train, y_train)
 Y_pred = random_forest.predict(X_test)
-acc_rf = random_forest.score(X_train, Y_train)
+acc_rf = random_forest.score(X_train, y_train)
 
 models = pd.DataFrame({
-    'Model': ['SVC', 'KNN', 'LogReg', 'Random Forest'],
-    'Score': [acc_svc, acc_knn, acc_log, acc_rf]
+    'Model': ['Random Forest'],
+    'Score': [acc_rf]
 })
 
 models.sort_values(by='Score', ascending=False, inplace=True)
